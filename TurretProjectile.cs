@@ -24,7 +24,7 @@ namespace pol1son.turret.projectile
         {
             if (other.CompareTag("Player"))
             {
-                // Получаем компонент здоровья игрока (предполагается, что он есть)
+                // Получаем компонент игрока (предполагается, что он есть)
                 Player player = other.GetComponent<Player>();
                 if (player != null)
                 {
