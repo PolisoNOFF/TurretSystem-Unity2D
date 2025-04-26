@@ -28,12 +28,18 @@ namespace pol1son.turret
         {
             FindTarget();
 
-            // Если есть цель, то поворачиваем дуло к цели
+            // если есть цель, то поворачиваем башню к ней
             if (target != null)
             {
-                Vector2 direction = -target.position - transform.position;
-                float angle = Mathf.Atan2(-direction.y, direction.x) * Mathf.Rad2Deg;
-                tower.rotation = Quaternion.AngleAxis(angle, -Vector3.forward);
+                Vector3 direction = target.position - transform.position;
+                direction.y = 0;
+
+                direction.Normalize();
+
+                Quaternion lookRotation = Quaternion.LookRotation(direction);
+
+                // юзаем вращение к башне
+                tower.rotation = lookRotation;
             }
 
             if (currentAmmo <= 0)
@@ -52,12 +58,12 @@ namespace pol1son.turret
 
         void FindTarget()
         {
-            // Создаем невидимый круг вокруг турели
+            // создаем невидимый круг вокруг турели
             Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, range, playerLayer);
 
             if (hits.Length > 0)
             {
-                // Если нашли игрока, устанавливаем его как цель
+                // если нашли игрока, устанавливаем его как цель
                 target = hits[0].transform;
             }
             else
